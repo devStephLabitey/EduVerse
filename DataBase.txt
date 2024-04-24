@@ -1,0 +1,13 @@
+CREATE TABLE utilisateurs ( id_utilisateur INT AUTO_INCREMENT PRIMARY KEY, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, mot_de_passe VARCHAR(120) NOT NULL, role ENUM('user_simple', 'admin', 'enseignant') );
+
+CREATE TABLE cours ( id_cours INT AUTO_INCREMENT PRIMARY KEY, description_cours VARCHAR(255) NOT NULL, categorie VARCHAR(100) NOT NULL, id_utilisateur_cours INT NOT NULL, CONSTRAINT id_uti_fk FOREIGN KEY (id_utilisateur_cours) REFERENCES utilisateurs (id_utilisateur) );
+
+CREATE TABLE chapitre ( id_chapitre INT AUTO_INCREMENT PRIMARY KEY, titre VARCHAR(100) NOT NULL, description_chapitre VARCHAR(250) NOT NULL, id_cours INT NOT NULL, CONSTRAINT id_cours_fk FOREIGN KEY (id_cours) REFERENCES cours (id_cours) );
+
+CREATE TABLE commentaire ( id_comment INT AUTO_INCREMENT PRIMARY KEY, commentaire TEXT NOT NULL, id_chapitre INT NOT NULL, id_utilisateur INT NOT NULL, CONSTRAINT id_chapitre_fk FOREIGN KEY (id_chapitre) REFERENCES chapitre (id_chapitre), CONSTRAINT id_utilisateur_fk FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur) );
+
+CREATE TABLE quiz ( id_quiz INT AUTO_INCREMENT PRIMARY KEY, question VARCHAR(250) NOT NULL, choix BOOLEAN NOT NULL, rep_correct VARCHAR(250) NOT NULL, id_chapitre INT NOT NULL, CONSTRAINT id_chapitre_fk FOREIGN KEY (id_chapitre) REFERENCES chapitre (id_chapitre) );
+
+CREATE TABLE forum ( id_forum INT AUTO_INCREMENT PRIMARY KEY, description_forum VARCHAR(255) NOT NULL, id_cours INT NOT NULL, id_utilisateur INT NOT NULL, CONSTRAINT id_cours_fk FOREIGN KEY (id_cours) REFERENCES cours (id_cours), CONSTRAINT id_utili_fk FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur) );
+
+CREATE TABLE progression ( id_prog INT AUTO_INCREMENT PRIMARY KEY, statut VARCHAR(255) NOT NULL, id_utilisateur INT NOT NULL, id_chapitre INT NOT NULL, id_cours INT NOT NULL, CONSTRAINT id_chap_fk FOREIGN KEY (id_chapitre) REFERENCES chapitre (id_chapitre), CONSTRAINT id_util_fk FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs (id_utilisateur), CONSTRAINT id_cours_fk FOREIGN KEY (id_cours) REFERENCES cours (id_cours) );
